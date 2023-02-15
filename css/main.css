@@ -1,0 +1,412 @@
+/* General */
+
+/* Color scheme
+ * 
+ * E62240
+ * 151413
+ * 879516
+ * 571942
+ * 096569
+ */
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.clear-fix:before, .clear-fix:after {
+  content: " ";
+  display: table;
+}
+
+.clear-fix:after {
+  clear: both;
+}
+
+.noSelect {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+       -o-user-select: none;
+          user-select: none;
+  
+  cursor: default;
+}
+
+body {
+  padding: 1em;
+  font-family: "Roboto", sans-serif;
+  font-size: 1em;
+   background: #0b4444; 
+
+  color: #FFFFFF;
+}
+
+a {
+  text-decoration: none;
+  color: #096569;
+}
+
+
+
+/* Sections */
+
+section {
+  width: 65em;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+section + section:before {
+  content: "";
+  display: block;
+  width: 100%;
+  margin: 1em 0;
+  border-top: 0.1em solid #A16500;
+  box-shadow: 0 0 0em 0.1em #F5B74E;
+}
+
+section h3 {
+  text-align: left;
+}
+
+
+/* Top tabs */
+
+ul.tabTitle {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 0.2em solid #571942;
+  color: #571942;
+  font-weight: bold;
+}
+
+ul.tabTitle li {
+  float: left;
+  padding: 0.25em 0.75em;
+  border-top: 0.1em solid transparent;
+}
+
+ul.tabTitle li:hover {
+  cursor: pointer;
+  background: #80436B;
+  color: #fff;
+}
+
+ul.tabTitle li.active {
+  background: #571942;
+  color: #FFF;
+}
+
+div.tabBody div + div {
+  display: none;
+}
+
+
+
+
+
+/* Input data */
+
+ul.inputData {
+  width: 80%;
+  margin: 0 auto;
+  padding-bottom: 15px; 
+  list-style: none;
+  counter-reset: inputData;
+	
+}
+
+ul.inputData li {
+  position: relative;
+}
+
+ul.inputData li + li {
+  
+}
+
+.word{
+	color: black;
+}
+.clue{
+	color: black;
+}
+.wordCopy{
+	color: white;
+}
+
+ul.inputData span.counter {
+  display: inline-block;
+  
+  height: 1em;
+  line-height: 1em;
+ 
+  
+  position: relative;
+  top: 50%;
+  left: 0;
+  right: 0;
+}
+
+ul.inputData span.counter:after {
+  counter-increment: inputData;
+  content: counter(inputData);
+}
+
+ul.inputData .spacer {
+  float: left;
+  width: 2.5em;
+  height: 0.1em;
+}
+
+ul.inputData .column {
+  float: left;
+  padding: 0.25em;
+}
+
+ul.inputData .column.word {
+  width: calc(100% - 2.5em - 2.5em);
+  height: 2.25em;
+}
+
+ul.inputData .column.removeButton {
+  width: 2.5em;
+  height: 2.25em;
+}
+
+ul.inputData .column.removeButton button {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+ul.inputData .column.clue {
+  width: calc(100% - 2.5em);
+}
+
+
+ul.inputData input[type=text] {
+  width: 100%;
+  height: 100%;
+  padding: 0.25em;
+  border: 0.1em solid #096569;
+  border-radius: 0.2em;
+}
+
+ul.inputData textarea {
+  width: 100%;
+  padding: 0.25em;
+  border: 0.1em solid #096569;
+  border-radius: 0.2em;
+}
+
+div.wordCopy {
+  font-size: 0.8em;
+  font-style: italic;
+}
+
+
+div.clueSwitch {
+  display: inline-block;
+}
+
+div.clueSwitch button {
+  width: 4em;
+  padding: 0;
+  float: left;
+}
+
+div.clueSwitch label {
+  float: left;
+  font-size: 0.8em;
+}
+
+div.clueSwitch .segment.left {
+  border-right: 0.1em solid #571942;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+div.clueSwitch .segment.right {
+  border-left: 0.1em solid #571942;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+
+/* Info messages */
+
+.infoMessage {
+  display: none;
+  margin: 0 0.5em 1em 0.5em;
+}
+
+.infoMessage p {
+  font-size: 0.9em;
+  text-align: left;
+}
+
+
+/* Crossword */
+
+table.crossword {
+  border-collapse: separate;
+  border-spacing: 0.1em;
+}
+
+table.crossword tr td {
+  position: relative;
+  
+  margin-bottom: 30px;
+  padding: 0;
+  text-align: left;
+  
+  width: 1.5em;
+  height: 1.5em;
+  
+  font-size: 1em;
+  font-weight: bold;
+	color: black;
+}
+
+table.crossword tr td.letter {
+  border: 0.1em solid #555;
+  border-radius: 0.1em;
+  background: #FFF;
+}
+
+table.crossword tr td.clue {
+  color: #FFF;
+  
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+table.crossword tr td.clue.horizontal {
+  background-image: url(../img/horizontal.svg);
+}
+
+table.crossword tr td.clue.vertical {
+  background-image: url(../img/vertical.svg);
+}
+
+#crosswordWrapper table.crossword {
+  position: absolute;
+}
+
+/* Buttons */
+.btn {
+  background-color: #b2d9d8; 
+  border: none; /* Remove borders */
+  color: black; 
+  padding: 12px 16px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+	border-radius: 12px;	
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color:#007167;
+}
+.clickme{
+	padding: inherit;
+}
+
+/* Clues */
+
+section.clues {
+  display: none;
+}
+.clickme{
+	padding-bottom:2px;
+}
+
+ul.clues {
+  margin: 0;
+  list-style: none;
+  counter-reset: clues;
+}
+
+ul.clues li + li {
+  margin-top: 0.125em;
+}
+
+ul.clues li:before {
+  content: counter(clues);
+  counter-increment: clues;
+  
+  margin-right: 0.5em;
+  
+  font-weight: bold;
+}
+
+
+/* Footer */
+
+footer {
+  width: 35em;
+  max-width: 90%;
+  
+  margin: 1em auto 0 auto;
+  padding: 0.5em 0 0 0;
+  
+  border-top: 0.2em solid #571942;
+  
+  text-align: left;
+}
+
+footer span {
+  font-size: 0.8em;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #b2d9d8;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #000000;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #b0eadf;
+  color: black;
+}
+/* Print */
+.printButtons{
+	 display: flex;
+  flex-direction: column;
+  align-items: center; /* centers the items horizontally */
+  justify-content: center;
+}
+
+/* Form */
+.js-search-form {
+	 display: flex;
+  flex-direction: column;
+  align-items: center; /* centers the items horizontally */
+  justify-content: center;
+}
+.search-results{
+	 display: flex;
+  flex-direction: column;
+  align-items: center; /* centers the items horizontally */
+  justify-content: center;
+}
