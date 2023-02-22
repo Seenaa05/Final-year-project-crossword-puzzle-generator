@@ -16,11 +16,12 @@ session_start();
     <link rel="stylesheet" type="text/css" href="css/main.css" media="all">
     <link rel="stylesheet" type="text/css" href="css/print.css" media="print">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.generator.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-	 <script type="text/javascript" src="js/modal.js"></script>
+
 	
   </head>
   <body>
@@ -38,16 +39,13 @@ session_start();
     <section class="inputData">
       <h3>Words</h3>
 	  	    <div class="buttonBox" align="center" >
-		<button class ="btn" name="add"><i class="fa fa-plus"></i>Add</button>
+		<button class ="btn" id='add-textbox-btn' name="add"><i class="fa fa-plus"></i>Add</button>
         <button class ="btn" name="generate"><i class="fa fa-check-square"></i>Generate</button>
         <button  class ="btn" name="clear"><i class="fa fa-trash-o"></i>Clear</button>
 		<?php
 		if (isset($_SESSION['username'])) {
     echo  '<button  class ="btn" onclick="saveWordList()" name="save"><i class="fa fa-floppy-o"></i>Save</button>';
-	echo'<form action="retrieve.php" method="post">
-  <input type="submit" value="Run Script">
-</form>';
-	echo  '<button  class ="btn" onclick="getWordList()" name="load"><i class="fa fa-floppy-o"></i>load</button>';
+	echo  '<button  class ="btn" onclick="getWordList()" name="load"><i class="fa fa-floppy-o"></i>Load</button>';
 	}
 	?>
       </div>
@@ -213,20 +211,105 @@ session_start();
 });
 }  
 
-function getWordList(){
-	var userId = 1;
-$.ajax({
+function getWordList() {
+  $.ajax({
     type: "POST",
-	url: "retrieve.php",
-	data: { id: userId },
+    url: "retrieve.php",
     dataType: "json",
     success: function(data) {
-       console.log(data);
-    },
- 
-});
+      // Create a table element and append it to a div
+      const table = $('<table>').css('padding', '5px');
+      const headerRow = $('<tr>');
+      const puzzlenameHeader = $('<th>').html('<b>Puzzle Name</b>').css('padding', '5px');
+      const wordsHeader = $('<th>').html('<b>Words</b>').css('padding', '5px');
+      const cluesHeader = $('<th>').html('<b>Clues</b>').css('padding', '5px');
+      const copyHeader = $('<th>').html('<b>Select</b>').css('padding', '5px');
+      headerRow.append(puzzlenameHeader, wordsHeader, cluesHeader, copyHeader);
+      table.append(headerRow);
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
+        const row = $('<tr>');
+        const puzzlenameCell = $('<td>').html(item.puzzlename).css('padding', '5px');
+        const wordsCell = $('<td>').html(item.words.join(', ')).css('padding', '5px');
+        const cluesCell = $('<td>').html(item.clues.join(', ')).css('padding', '5px');
+        const selectCell = $('<td>').css('padding', '5px');
+        const selectBox = $('<input>').attr('type', 'checkbox').attr('id', 'select_' + i);
+        selectCell.append(selectBox);
+        row.append(puzzlenameCell, wordsCell, cluesCell, selectCell);
+        table.append(row);
+      }
+      const tableDiv = $('<div>').append(table);
 
+      // Create the dialog box with the table inside
+      const dialogContent = $('<div>').append(tableDiv);
+      const dialog = dialogContent.dialog({
+        title: 'Puzzle Data',
+        modal: true,
+        width: 'auto',
+        height: 'auto',
+        close: function() {
+          $(this).dialog('destroy').remove();
+        }
+      });
+
+      // Create a button to copy selected rows
+      const copyButton = $('<button>').text('Copy Selected Rows').button();
+      copyButton.on('click', function() {
+	
+		let numWords = 0;
+  for (let i = 0; i < data.length; i++) {
+    const item = data[i];
+    const selectBox = $('#select_' + i);
+    if (selectBox.is(':checked')) {
+      numWords += item.words.length;
+	  console.log(numWords);
+    }
+  }
+
+  // Check if the number of words is greater than the number of existing textboxes
+  const numTextboxes = $('input[id^="word"]').length;
+   console.log(numTextboxes);
+  if (numWords > numTextboxes) {
+    // Trigger a click event on the button that adds additional textboxes
+    const diff = numWords - numTextboxes;
+for (let i = 0; i < diff; i++) {
+    $('#add-textbox-btn').trigger('click');
 }
+  }
+        // Loop through all the rows and copy data for selected ones
+        for (let i = 0; i < data.length; i++) {
+          const item = data[i];
+          const selectBox = $('#select_' + i);
+          if (selectBox.is(':checked')) {
+            const words = item.words;
+            const clues = item.clues;
+            for (let j = 0; j < words.length; j++) {
+              const $wordInput = $('#word' + (j + 1));
+              $wordInput.val(words[j]);
+            }
+            for (let j = 0; j < clues.length; j++) {
+              const $clueInput = $('#clue' + (j + 1));
+              $clueInput.val(clues[j]);
+            }
+          }
+        }
+        dialog.dialog('close');
+      });
+      
+      // Append the copy button to the dialog
+      dialogContent.append(copyButton);
+
+      // Open the dialog
+      dialog.dialog('open');
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.error("Error retrieving word list:", textStatus, errorThrown);
+    }
+  });
+}
+
+
+
 $(document).on('click', '.clickme', function() {
   var word = ($(this).prev().val())
   WikiSearch(word);
