@@ -11,6 +11,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "crossword_puzzle_data";
+echo "TestSave";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

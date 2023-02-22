@@ -24,7 +24,6 @@ session_start();
 	
   </head>
   <body>
- <div class="bg"></div>
 <div class="topnav">
 	<button class ="btn" id="loginmodal" onclick="window.location='login.php';" ><i class="fa fa-sign-in" aria-hidden="true"></i></button>
 	<button class ="btn" name="settings"><i class="fa fa-cog" aria-hidden="true"></i></button>
@@ -45,6 +44,10 @@ session_start();
 		<?php
 		if (isset($_SESSION['username'])) {
     echo  '<button  class ="btn" onclick="saveWordList()" name="save"><i class="fa fa-floppy-o"></i>Save</button>';
+	echo'<form action="retrieve.php" method="post">
+  <input type="submit" value="Run Script">
+</form>';
+	echo  '<button  class ="btn" onclick="getWordList()" name="load"><i class="fa fa-floppy-o"></i>load</button>';
 	}
 	?>
       </div>
@@ -210,7 +213,20 @@ session_start();
 });
 }  
 
+function getWordList(){
+	var userId = 1;
+$.ajax({
+    type: "POST",
+	url: "retrieve.php",
+	data: { id: userId },
+    dataType: "json",
+    success: function(data) {
+       console.log(data);
+    },
+ 
+});
 
+}
 $(document).on('click', '.clickme', function() {
   var word = ($(this).prev().val())
   WikiSearch(word);
