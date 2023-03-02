@@ -160,8 +160,6 @@ session_start();
       </div>
     </section>
     <section class="clues"></section>
-
-
   </body>
 </html>
 <script>
@@ -223,19 +221,40 @@ function getWordList() {
       const puzzlenameHeader = $('<th>').html('<b>Puzzle Name</b>').css('padding', '5px');
       const wordsHeader = $('<th>').html('<b>Words</b>').css('padding', '5px');
       const cluesHeader = $('<th>').html('<b>Clues</b>').css('padding', '5px');
-      const copyHeader = $('<th>').html('<b>Select</b>').css('padding', '5px');
-      headerRow.append(puzzlenameHeader, wordsHeader, cluesHeader, copyHeader);
+	const selectHeader = $('<th>').html('<b>Select</b>').css('padding', '5px');
+	  const deleteHeader = $('<th>').html('<b>Delete</b>').css('padding', '5px');
+      headerRow.append(puzzlenameHeader, wordsHeader, cluesHeader, selectHeader,deleteHeader);
       table.append(headerRow);
       for (let i = 0; i < data.length; i++) {
         const item = data[i];
         const row = $('<tr>');
-        const puzzlenameCell = $('<td>').html(item.puzzlename).css('padding', '5px');
+        const puzzlenameCell = $('<td>').html(item.nameOfPuzzle).css('padding', '5px');
         const wordsCell = $('<td>').html(item.words.join(', ')).css('padding', '5px');
         const cluesCell = $('<td>').html(item.clues.join(', ')).css('padding', '5px');
         const selectCell = $('<td>').css('padding', '5px');
         const selectBox = $('<input>').attr('type', 'checkbox').attr('id', 'select_' + i);
         selectCell.append(selectBox);
-        row.append(puzzlenameCell, wordsCell, cluesCell, selectCell);
+		 const idCell = $('<td>').html(item.puzzleId).css('display', 'none');
+		 const deleteCell = $('<td>').css('padding', '5px');
+        const deleteButton = $('<button>').text('Delete').button();
+		     deleteButton.on('click', function() {
+          const puzzleId = idCell.html();
+          $.ajax({
+            type: "POST",
+            url: "delete.php",
+            data: { puzzleId: puzzleId },
+            success: function(data) {
+              console.log("Puzzle deleted:", puzzleId);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error deleting puzzle:", textStatus, errorThrown);
+            }
+          });
+          row.remove();
+        });
+		deleteCell.append(deleteButton);
+		
+        row.append(puzzlenameCell, wordsCell, cluesCell, selectCell,idCell, deleteCell);
         table.append(row);
       }
       const tableDiv = $('<div>').append(table);
@@ -262,13 +281,11 @@ function getWordList() {
     const selectBox = $('#select_' + i);
     if (selectBox.is(':checked')) {
       numWords += item.words.length;
-	  console.log(numWords);
     }
   }
 
   // Check if the number of words is greater than the number of existing textboxes
   const numTextboxes = $('input[id^="word"]').length;
-   console.log(numTextboxes);
   if (numWords > numTextboxes) {
     // Trigger a click event on the button that adds additional textboxes
     const diff = numWords - numTextboxes;
@@ -283,6 +300,7 @@ for (let i = 0; i < diff; i++) {
           if (selectBox.is(':checked')) {
             const words = item.words;
             const clues = item.clues;
+			//var testpuzzleId = item.puzzleId;
             for (let j = 0; j < words.length; j++) {
               const $wordInput = $('#word' + (j + 1));
               $wordInput.val(words[j]);
@@ -293,11 +311,14 @@ for (let i = 0; i < diff; i++) {
             }
           }
         }
+		
         dialog.dialog('close');
       });
-      
+       
+		  
       // Append the copy button to the dialog
       dialogContent.append(copyButton);
+
 
       // Open the dialog
       dialog.dialog('open');
@@ -308,7 +329,19 @@ for (let i = 0; i < diff; i++) {
   });
 }
 
-
+function deleteRecord(){
+		        $.ajax({
+            type: "POST",
+            url: "test.php",
+            data: { puzzleId: puzzleId },
+            success: function(data) {
+              console.log("Puzzle deleted:", puzzleId);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error deleting puzzle:", textStatus, errorThrown);
+            }
+          });
+}
 
 $(document).on('click', '.clickme', function() {
   var word = ($(this).prev().val())

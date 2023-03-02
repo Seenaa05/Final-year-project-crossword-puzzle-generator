@@ -6,7 +6,6 @@ $username = "root";
 $password = "";
 $dbname = "crossword_puzzle_data";
 
-
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -41,7 +40,7 @@ if ($result) {
                 $clues[] = $content_row['clue'];
             }
 
-            $puzzles[] = array('nameOfPuzzle' => $nameOfPuzzle, 'words' => $words, 'clues' => $clues);
+            $puzzles[] = array('nameOfPuzzle' => $nameOfPuzzle, 'words' => $words, 'clues' => $clues, 'puzzleId' => $puzzleId );
         }
     }
 
@@ -51,4 +50,5 @@ if ($result) {
     echo json_encode(array('error' => 'Error retrieving puzzles from database'));
 }
 $conn->close();
+
 ?>
