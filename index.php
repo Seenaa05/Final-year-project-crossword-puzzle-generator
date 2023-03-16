@@ -86,7 +86,6 @@ session_start();
         </li>
       </ul>
     </section>
-
     <section class="crossword" >
       <div id="placeholderMessage" class="infoMessage">
         <p>

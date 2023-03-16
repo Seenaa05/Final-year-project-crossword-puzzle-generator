@@ -41,6 +41,7 @@ if ($result) {
             }
 
             $puzzles[] = array('nameOfPuzzle' => $nameOfPuzzle, 'words' => $words, 'clues' => $clues, 'puzzleId' => $puzzleId );
+			
         }
     }
 
