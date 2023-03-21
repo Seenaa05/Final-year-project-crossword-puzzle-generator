@@ -34,6 +34,7 @@
     $('button[name=remove]').click(removeWordClickHandler);
     $('button[name=clear]').click(clearClickHandler);
     $('button[name=generate]').click(generateClickHandler);
+	$('button[name=renderClue]').click(clueClickHandler);
 	$('button[name=printTeacher]').click(print4TeacherClickHandler);
     $('button[name=printStudent]').click(print4StudentClickHandler);
     
@@ -238,6 +239,7 @@
   // Handler for "Generate" clicks
   function generateClickHandler(/*event*/) {
     clear(); // Clear any previous crosswords
+
     
     // Read input words
     var words = [];
@@ -367,6 +369,10 @@
     }
     
     //$crossword.css({ marginLeft: marginLeft }); // Restore margin
+  }
+      function clueClickHandler() {
+		   console.log("Clue click handler");
+    renderClues(forStudent);
   }
   // Renders clues for a crossword
   function renderClues(forStudent) {

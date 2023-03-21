@@ -299,7 +299,6 @@ for (let i = 0; i < diff; i++) {
           if (selectBox.is(':checked')) {
             const words = item.words;
             const clues = item.clues;
-			//var testpuzzleId = item.puzzleId;
             for (let j = 0; j < words.length; j++) {
               const $wordInput = $('#word' + (j + 1));
               $wordInput.val(words[j]);
@@ -317,11 +316,33 @@ for (let i = 0; i < diff; i++) {
 		  
       // Append the copy button to the dialog
       dialogContent.append(copyButton);
-
-
+	  
+	  
+	      // Create a share link
+      const shareButton = $('<button>').text('Share selected puzzle').button();
+      shareButton.on('click', function() {
+		    // Loop through all the rows and copy data for selected ones
+        for (let i = 0; i < data.length; i++) {
+          const item = data[i];
+          const selectBox = $('#select_' + i);
+          if (selectBox.is(':checked')) {
+            const puzzleId = item.puzzleId;
+			console.log(puzzleId);
+			var url = "http://localhost/individual-project/test.php?puzzleId=" + puzzleId;
+			window.open(url);
+          }
+        }
+		  
+	  });
+	  
+	  
+	  
+	  
+		dialogContent.append(shareButton);
       // Open the dialog
       dialog.dialog('open');
-    },
+    }
+	,
     error: function(jqXHR, textStatus, errorThrown) {
       console.error("Error retrieving word list:", textStatus, errorThrown);
     }

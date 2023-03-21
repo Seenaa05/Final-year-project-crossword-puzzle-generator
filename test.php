@@ -36,18 +36,14 @@ if ($result) {
             }
 
             $puzzles[] = array('nameOfPuzzle' => $nameOfPuzzle, 'words' => $words, 'clues' => $clues );
+				echo "<script>";
+				echo "var words = " . json_encode($words) . ";";
+				echo "var clues = " . json_encode($clues) . ";";
+				echo "</script>";
 			
         }
     }
-	$words = array();
-	foreach ($puzzles as $puzzle) {
-    foreach ($puzzle['words'] as $word) {
-        $words[] = $word;
-    }
-	echo "<script>";
-echo "var words = " . json_encode($words) . ";";
-echo "</script>";
-}
+
 
 
 } else {
@@ -157,9 +153,9 @@ echo "</script>";
 }
 	</style>
    <button id ="genButton" class ="btn"  name="generate"><i class="fa fa-check-square"></i>Generate</button>
+    <button id ="clueButton" class ="btn"  name="renderClue"><i class="fa fa-plus"></i>Clue</button>
    <button class ="btn" id='add-textbox-btn' hidden="hidden" name="add"><i class="fa fa-plus"></i>Add</button>
-   <button id ="genButton" onclick="makeAnswerable()" class ="btn" ><i class="fa fa-check-square"></i></button>
-   <button onclick="addWords()" class ="btn" ><i class="fa fa-plus"></i></button>
+
    
     <section class="crossword" >
       <div id="placeholderMessage" class="infoMessage">
@@ -183,8 +179,20 @@ echo "</script>";
       <div id="crosswordWrapper" class="noSelect clear-fix"></div>
 	
     </section>
+	<section id ="clues" class="clues"></section>
 </html>
 <script>
+window.onload = function() {
+  // Your JavaScript code goes here
+  console.log("The page has finished loading.");
+    console.log(clues);
+	  console.log(words);
+  addWords();
+  const genbutton = document.getElementById('genButton');
+  genbutton.click();
+  makeAnswerable();
+  addClues();
+};
 function addWords(){
 let numWords = words.length;
 console.log(numWords);
@@ -204,6 +212,11 @@ console.log(numWords);
              const $wordInput = $('#word' + (j + 1));
              $wordInput.val(words[j]);
            }
+	   for (let j = 0; j < clues.length; j++) {
+              const $clueInput = $('#clue' + (j + 1));
+              $clueInput.val(clues[j]);
+            }
+		   
 }
 		   
 function makeAnswerable(){
@@ -288,5 +301,17 @@ for (var i = 0; i < letterCells.length; i++) {
   // Set the contentEditable property of the cell to true
   cell.contentEditable = true;
 }
+}
+function addClues(){
+	// Get a reference to the clues section in the HTML document
+	     const cluesSection = document.getElementById('clues');
+		 cluesSection.style.display = 'block';
+// Loop through the clues array and create HTML elements for each clue
+      
+      clues.forEach((clue, index) => {
+        const clueItem = document.createElement('div');
+        clueItem.textContent = `Clue ${index + 1}: ${clue}`;
+        cluesSection.appendChild(clueItem);
+      });
 }
 </script>
