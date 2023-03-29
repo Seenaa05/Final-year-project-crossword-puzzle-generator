@@ -13,7 +13,7 @@ session_start();
 	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	 <link rel="stylesheet" type="text/css" href="css/normalize.css">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" type="text/css" href="css/main.css" media="all">
+   <link rel="stylesheet" type="text/css" href="css/main.css" media="all">
     <link rel="stylesheet" type="text/css" href="css/print.css" media="print">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
@@ -26,16 +26,17 @@ session_start();
   </head>
   <body>
 <div class="topnav">
-	<button class ="btn" id="loginmodal" onclick="window.location='login.php';" ><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-	<button class ="btn" name="settings"><i class="fa fa-cog" aria-hidden="true"></i></button>
-		<?php
-		if (isset($_SESSION['id'])) {
-    echo  '<button class ="btn" onclick="logOut()" name="logout"><i class=" fa fa-sign-out" aria-hidden="true"></i></button>';
-	}
-	?>
-
+	<?php if (!isset($_SESSION['id'])) { ?>
+	<button class="btn" id="loginmodal" onclick="window.location='login.php';"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+	<?php } ?>
+	<?php if (isset($_SESSION['id'])) { ?>
+	<button class="btn" onclick="logOut()" name="logout"><i class=" fa fa-sign-out" aria-hidden="true"></i></button>
+	<?php } ?>
 </div>
-   
+<div id="notification" class="popup">
+  <span class="close" onclick="closeNotification()">&times;</span>
+  <p>Puzzle saved</p>
+</div>
     <section class="inputData">
       <h3>Words</h3>
 	  	    <div class="buttonBox" align="center" >
@@ -52,17 +53,16 @@ session_start();
       <ul class="inputData inputWords">
         <li class="clear-fix"> 
           <div class="dragHandleWrapper">
-            <div class="dragHandle">
+            
               <span class="counter"></span>
-            </div>
+            
           </div>
           <div class="spacer"></div>
           <div class="column word">
             <input id="word1" name="word" type="text" value="Enter" placeholder="Enter a word...">
-			  <button class="clickme btn" name="test" ><i class="fa fa-search"></i>WikiSearch</button>
-			 
-			
+			<button class="clickme btn" name="test" ><i class="fa fa-search"></i>WikiSearch</button>
           </div>
+	
           <div class="column removeButton">
             <button  class ="btn"name="remove"><i class="fa fa-times-circle"></i></button>
           </div>
@@ -153,6 +153,7 @@ session_start();
     </section>
 	 
 	    <section class="printButtons">
+		<textarea id="puzzleName" name="puzzleName"  placeholder="Enter puzzle name"></textarea>
       <div class="buttonBox">
 	  <button class ="btn" name="printTeacher"><i class="fa fa-print"></i>Print (Teacher Variant)</button>
      <button class ="btn" name="printStudent"><i class="fa fa-print"></i>Print (Student Variant)</button>
@@ -162,6 +163,15 @@ session_start();
   </body>
 </html>
 <script>
+function showNotification() {
+  var notification = document.getElementById("notification");
+  notification.style.display = "block";
+}
+
+function closeNotification() {
+  var notification = document.getElementById("notification");
+  notification.style.display = "none";
+}
  function logOut() {
     fetch('logout.php', {
       method: 'post'
@@ -179,7 +189,8 @@ session_start();
     var words = [];
 	var textareas = document.getElementsByTagName('textarea');
 	var clues = [];
-	var name = 'Anees'
+	var puzzlenametextbox = document.getElementById("puzzleName");
+	var name = puzzlenametextbox.value;
     
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].id.startsWith("word")) {
@@ -203,6 +214,7 @@ session_start();
         name: name
     },
     success: function(response) {
+		showNotification();
         console.log(response);
     }
 });
@@ -373,30 +385,7 @@ var id = value
 document.querySelector('.js-search-input').value = id
 handleSubmit(event);
 }
-function save(){
-console.log(getSelectionText())
-document.getElementById("clue1").value = getSelectionText();
-}
-function getSelectionText() {
-    var text = "";
-    var activeEl = document.activeElement;
-    var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
-    if (
-      (activeElTagName == "textarea") || (activeElTagName == "input" &&
-      /^(?:text|search|password|tel|url)$/i.test(activeEl.type)) &&
-      (typeof activeEl.selectionStart == "number")
-    ) {
-        text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
-    } else if (window.getSelection) {
-        text = window.getSelection().toString();
-    }
-    return text;
-}
 
-function addText(elementID) {
-	var perm = getSelectionText();
-  document.getElementById(elementID).value = perm
-};
 async function handleSubmit(event) {
   event.preventDefault();
   const inputValue = document.querySelector('.js-search-input').value;

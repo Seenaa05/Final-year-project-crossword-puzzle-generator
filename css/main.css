@@ -48,7 +48,11 @@ a {
   color: #096569;
 }
 
-
+ h1 {
+      text-align: center;
+      font-weight: bold;
+	  padding-bottom: 20px;
+    }
 
 /* Sections */
 
@@ -121,11 +125,19 @@ ul.inputData {
 
 ul.inputData li {
   position: relative;
+
+  padding-bottom: 20px;
 }
 
 ul.inputData li + li {
   
 }
+.dragHandleWrapper{
+position: relative;
+bottom: -23px;
+width: 5%;
+}
+
 
 .word{
 	color: black;
@@ -136,6 +148,12 @@ ul.inputData li + li {
 .wordCopy{
 	color: white;
 }
+#puzzleName {
+  color: black;
+}
+
+
+
 
 ul.inputData span.counter {
   display: inline-block;
@@ -314,11 +332,16 @@ table.crossword tr td.clue.vertical {
 .clickme{
 	padding: inherit;
 }
+.wikisearch{
+	 position: relative;
+ left: 40px;
+}
 
 /* Clues */
 
 section.clues {
   display: none;
+  text-align: center;
 }
 .clickme{
 	padding-bottom:2px;
@@ -410,3 +433,31 @@ footer span {
   align-items: center; /* centers the items horizontally */
   justify-content: center;
 }
+.js-search-input{
+	color:black;
+}
+/* Notification */
+.popup {
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #333;
+  background-color: blue;
+  padding: 20px;
+  display: none;
+}
+
+.popup p {
+  margin: 0;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  cursor: pointer;
+}
+

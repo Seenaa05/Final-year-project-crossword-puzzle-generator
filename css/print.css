@@ -2,6 +2,7 @@
 
   body {
     background: none;
+
   }
 
   header, section.tabs, section.inputButtons, section.inputData,
@@ -10,18 +11,25 @@
     display: none;
   }
 
-  #crosswordWrapper {
-    text-align: left
-    margin-bottom: 1em;
+   #crosswordWrapper {
+    
+   text-align: center;
+    margin: auto;
   }
 
   #crosswordWrapper table.crossword {
+	  text-align: center;
     display: inline-block;
     position: relative;
-  }
+	   margin: 0 auto;
+    max-width: 100%;
+  } 
 
   section.clues {
+	  text-align: center;
     display: initial;
+	   margin: 0 auto;
+    max-width: 100%;
   }
 
 }

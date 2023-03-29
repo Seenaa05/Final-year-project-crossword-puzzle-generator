@@ -97,11 +97,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
         body{ font: 14px sans-serif; }
-        .wrapper{ width: 360px; padding: 20px; }
+        .wrapper{ width: 360px; padding: 20px;  margin: 0 auto; }
     </style>
 </head>
 <body>
-    <div class="wrapper">
+    <div id= "Login" class="wrapper">
         <h2>Login</h2>
         <p>Please fill in your credentials to login.</p>
 

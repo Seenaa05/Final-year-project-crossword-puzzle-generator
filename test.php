@@ -39,6 +39,7 @@ if ($result) {
 				echo "<script>";
 				echo "var words = " . json_encode($words) . ";";
 				echo "var clues = " . json_encode($clues) . ";";
+				
 				echo "</script>";
 			
         }
@@ -69,6 +70,8 @@ if ($result) {
 
 	
   </head>
+  <h1><?php echo $nameOfPuzzle; ?></h1>
+  <body>
       <ul id ="test" class="inputData inputWords">
         <li class="clear-fix"> 
           <div class="dragHandleWrapper">
@@ -152,8 +155,8 @@ if ($result) {
   display: none;
 }
 	</style>
-   <button id ="genButton" class ="btn"  name="generate"><i class="fa fa-check-square"></i>Generate</button>
-    <button id ="clueButton" class ="btn"  name="renderClue"><i class="fa fa-plus"></i>Clue</button>
+   <button id ="genButton" class ="btn" hidden="hidden" name="generate"><i class="fa fa-check-square"></i>Generate</button>
+    <button id ="clueButton" class ="btn" hidden="hidden" name="renderClue"><i class="fa fa-plus"></i>Clue</button>
    <button class ="btn" id='add-textbox-btn' hidden="hidden" name="add"><i class="fa fa-plus"></i>Add</button>
 
    
@@ -180,19 +183,32 @@ if ($result) {
 	
     </section>
 	<section id ="clues" class="clues"></section>
+<div id="notification" class="popup">
+  <span class="close" onclick="closeNotification()">&times;</span>
+  <p>Congrats</p>
+</div>
+	</body>
 </html>
 <script>
 window.onload = function() {
-  // Your JavaScript code goes here
-  console.log("The page has finished loading.");
-    console.log(clues);
-	  console.log(words);
+
+
   addWords();
   const genbutton = document.getElementById('genButton');
   genbutton.click();
   makeAnswerable();
   addClues();
 };
+function showNotification() {
+  var notification = document.getElementById("notification");
+  notification.style.display = "block";
+}
+
+function closeNotification() {
+  var notification = document.getElementById("notification");
+  notification.style.display = "none";
+}
+
 function addWords(){
 let numWords = words.length;
 console.log(numWords);
@@ -221,14 +237,14 @@ console.log(numWords);
 		   
 function makeAnswerable(){
 // Get all the cells with the class "letter"
-var letterCells1 = document.querySelectorAll('.letter');
+var letterCells = document.querySelectorAll('.letter');
 
 // Initialize an empty array to store the answers
 var answers = [];
 
 // Loop through each letter cell and get its row and cell index
-for (var i = 0; i < letterCells1.length; i++) {
-  var cell = letterCells1[i];
+for (var i = 0; i < letterCells.length; i++) {
+  var cell = letterCells[i];
   
   // Get the row and cell index of the letter cell
   var rowIndex = cell.parentElement.rowIndex;
@@ -248,22 +264,22 @@ console.log(answers);
 
 
 // Get all the <td class="letter"> elements
-const letterCells2 = document.querySelectorAll('.letter');
+const letterCellsEmpty = document.querySelectorAll('.letter');
 
 // Loop through each <td class="letter"> element and remove the content of its <div> element
-letterCells2.forEach(cell => {
+letterCellsEmpty.forEach(cell => {
   cell.querySelector('div').textContent = '';
 });
 
 
 // Get all the <td class="letter"> elements
-const letterCells3 = document.querySelectorAll('.letter');
+const letterCellsAnswer = document.querySelectorAll('.letter');
 
 // Initialize the number of correct letters to 0
 let numCorrectLetters = 0;
 
 // Loop through each <td class="letter"> element and listen to the input event
-letterCells3.forEach(cell => {
+letterCellsAnswer.forEach(cell => {
   cell.addEventListener('input', event => {
     const inputtedLetter = event.target.textContent.trim().toUpperCase();
     const row = cell.parentElement.rowIndex;
@@ -278,11 +294,13 @@ letterCells3.forEach(cell => {
     if (inputtedLetter === answer.letter.toUpperCase()) {
       // The inputted letter is correct
       cell.style.color = 'green';
+	   cell.removeAttribute('contenteditable');
       numCorrectLetters++;
       
       // Check if all letters are correct
-      if (numCorrectLetters === letterCells3.length) {
-        alert('Congratulations, you completed the puzzle!');
+      if (numCorrectLetters === letterCellsAnswer.length) {
+        
+		showNotification();
       }
     } else {
       // The inputted letter is incorrect
