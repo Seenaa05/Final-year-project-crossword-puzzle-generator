@@ -29,24 +29,15 @@
 
     
    
-    $(window).resize(windowResizeHandler);
-    $('button[name=add]').click(addWordClickHandler);
-    $('button[name=remove]').click(removeWordClickHandler);
+
     $('button[name=clear]').click(clearClickHandler);
     $('button[name=generate]').click(generateClickHandler);
-	$('button[name=renderClue]').click(clueClickHandler);
-	$('button[name=printTeacher]').click(print4TeacherClickHandler);
-    $('button[name=printStudent]').click(print4StudentClickHandler);
-    
-    // Connect input data change handler
     $('ul.inputData input[name=word]').change(wordChangeHandler);
-    
-    $('ul.inputData input[name=word]').change(); // 
-    
-    $('button[name=generate]').click(); // 
+
+
   });
     cUI.prototype = {
-    // Returns (possibly also creates) the crossword's DOM element
+
 	
     getDOMElement: function() {
 		console.log("Return DOM element");
@@ -96,91 +87,11 @@
     return margin;
   }
   
-  
-  // Handler for window resizing events
-  function windowResizeHandler(/*event*/) {
-    var $parent = $('#crosswordWrapper');
-    var $child  = $('#crosswordWrapper table.crossword');
-    
-    $child.css({ marginLeft: getLeftMarginForCentering($parent, $child) + 'px' });
-  }
-  
+
+
  
   
-  // Handler for "Add Word" button clicks
-  function addWordClickHandler(/*event*/) {
-    if ($('ul.inputWords li').length === 1) {
-      $('button[name=remove]').removeAttr('disabled');
-    }
-    
-    var $wordLi = $('ul.inputWords li:last-child').clone();
-    $wordLi.find('button[name=remove]').click(removeWordClickHandler);
-    
-    var $input = $wordLi.find('input');
-    $input.val('');
-    $input.change(wordChangeHandler);
-    
-    var $clueLi = $('ul.inputClues li:last-child').clone();
-    $clueLi.find('div.clueSwitch button.segment').click(clueSwitchClickHandler);
-    
-    var $textarea = $clueLi.find('textarea');
-    $textarea.html('');
-    
-    var $switch = $clueLi.find('div.clueSwitch');
-    
-    $switch.find('button.segment.active').removeClass('active');
-    $($switch.find('button.segment')[0]).addClass('active');
-    
-    var $label = $clueLi.find('label[for=' + $switch.attr('id') + ']');
-    
-    var updateId = function($element) {
-      var id = $element.attr('id');
-      
-      var numberMatch = id.match(/\d+/);
-      
-      var prefix = id.slice(0, numberMatch.index);
-      var number = parseInt(id.slice(numberMatch.index));
-      
-      $element.attr('id', prefix + (number + 1));
-    };
-    
-    updateId($input);
-    updateId($textarea);
-    updateId($switch);
-    
-    $label.attr('for', $switch.attr('id'));
-    
-    $('ul.inputWords').append($wordLi);
-    $('ul.inputClues').append($clueLi);
-  }
-  
-    function clueSwitchClickHandler(/*event*/) {
-    if ($(this).hasClass('active')) {
-      return;
-    }
-    
-    $(this).parent().find('button.segment').toggleClass('active');
-  }
 
-  function removeWordClickHandler(event) {
-	  console.log("Removed word");
-    var $parent = $(event.currentTarget).parent();
-    
-    while (! $parent.parent().hasClass('inputWords')) {
-      $parent = $parent.parent();
-    }
-    
-    var index = $('ul.inputWords li').index($parent);
-    
-    $parent.remove();
-    
-    if ($('ul.inputWords li').length === 1) {
-      $('button[name=remove]').attr('disabled', 'disabled');
-    }
-    
-    $('ul.inputClues li:nth-child(' + (index + 1) + ')').remove();
-  }
-  
   
   // Handler for "Clear" button clicks
   function clearClickHandler(/*event*/) {
@@ -210,11 +121,7 @@
   }
   
   
-  // Disables the button with the specified name
-  function disableButton(name) {
-    $('button[name=' + name + ']').attr('disabled', 'disabled');
-  }
-  
+
   
   // Enables the button with the specified name
   function enableButton(name) {
@@ -336,82 +243,9 @@
   }
   
   
-    function print4StudentClickHandler() {
-    print(true);
-  }
-    function print4TeacherClickHandler() {
-    print(false);
-  }
-    function print(forStudent) {
-    if (currentCrosswordIndex < 0 || currentCrosswordIndex > crosswords4UI.length - 1) {
-      return;
-    }
-    
-    var crossword4UI = crosswords4UI[currentCrosswordIndex];
-    var $crossword   = crossword4UI.getDOMElement();
-    var $letters     = null;
-    
-    var marginLeft = $crossword.css('margin-left');
-    
-    //$crossword.css({ marginLeft: 0 }); // Clear margin
-    
-    if (forStudent) { // Hide crossword letters
-      $letters = $crossword.find('tr td.letter div');
-      $letters.hide();
-    }
-    
-    renderClues(forStudent);
-    
-    window.print();
-    
-    if (forStudent) { // Show crossword letters
-      $letters.show();
-    }
-    
-    //$crossword.css({ marginLeft: marginLeft }); // Restore margin
-  }
-      function clueClickHandler() {
-		   console.log("Clue click handler");
-    renderClues(forStudent);
-  }
-  // Renders clues for a crossword
-  function renderClues(forStudent) {
-    var $ul = $('<ul>').addClass('clues');
-    
-    $('ul.inputClues li').each(function(index, element) {
-      var clue = $(element).find('textarea[name=clue]').val();
-      var $li  = $('<li>').html(clue);
-      
-      if ($(element).find('button.segment.clue').hasClass('active')) {
-        if (forStudent) {
-          $li.html('______________________________');
-        } 
-		else {
-          $li.html(clue);
-        }
-      }
-      
-      $ul.append($li);
-    });
-    
-    $('section.clues').html($ul);
-  }
   
   
   
-  // Handler for word change events
-  function wordChangeHandler(/*event*/) {
-    $('#outdatedMessage').show();
-    
-    var $parent = $(this);
-    
-    while ($parent && ! $parent.is('li')) {
-      $parent = $parent.parent();
-    }
-    
-    var index = $('ul.inputWords li').index($parent);
-    
-    $('ul.inputClues li:nth-child(' + (index + 1) + ') .wordCopy span').html($(this).val());
-  }
+
   
 })(jQuery);

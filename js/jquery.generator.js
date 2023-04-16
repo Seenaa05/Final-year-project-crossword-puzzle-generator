@@ -673,44 +673,7 @@
   };
   
   
-  // Logger for outputting debug information to console
-/*   function ConsoleLogger() {
-  }
-  
-  ConsoleLogger.prototype = {
-    // Logs a message
-    log: function(message) {
-      console.log(message);
-    },
-    
-    // Logs a word
-    logWord: function(word, message) {
-      var msg = (typeof message !== undefined) ? message : '';
-      
-      console.log(msg, word.value);
-    },
-    
-    // Logs a crossword
-    logCrossword: function(crossword) {
-      console.log('Crossword {');
-      
-      for (var i = 0; i < crossword.length; ++i) {
-        var word = crossword.get(i);
-        var orientation = 'none';
-        
-        if (word.orientation === ORIENTATION.HORIZONTAL) {
-          orientation = 'horizontal';
-        } else if (word.orientation === ORIENTATION.VERTICAL) {
-          orientation = 'vertical';
-        }
-        
-        console.log('\t', word.value, '(' + word.start.x + ',' + word.start.y + ')', orientation);
-      }
-      
-      console.log('}');
-    }
-  }; */
-  
+
   
   // Global variables holding the plugin state
   var theGenerator = null;

@@ -49,17 +49,7 @@ for ($i = 0; $i < count($wordarray); $i++) {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
     }
 }
-/* $sql = "INSERT INTO wordlist (id, name, words, clues) VALUES ('$id','$name','$words_string' , '$clues_string')";
-//$stmt = mysqli_prepare($conn, $sql);
-//mysqli_stmt_bind_param($stmt, "ssss", $id, $name, $words_array, $clues_array);
 
- //mysqli_stmt_execute($stmt);
-if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
- */
 $conn->close();
 
 ?>

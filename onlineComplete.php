@@ -72,6 +72,7 @@ if ($result) {
   </head>
   <h1><?php echo $nameOfPuzzle; ?></h1>
   <body>
+  
       <ul id ="test" class="inputData inputWords">
         <li class="clear-fix"> 
           <div class="dragHandleWrapper">
@@ -86,6 +87,9 @@ if ($result) {
 			 
 			
           </div>
+		    <div class="column removeButton">
+            <button  class ="btn"name="remove"><i class="fa fa-times-circle"></i></button>
+          </div>
 
 		  
         </li>
@@ -99,6 +103,9 @@ if ($result) {
           <div class="column word">
             <input id="word2" name="word" type="text" value="Test" placeholder="Enter a word...">
 			
+          </div>
+		    <div class="column removeButton">
+            <button  class ="btn"name="remove"><i class="fa fa-times-circle"></i></button>
           </div>
    
         </li>
@@ -121,13 +128,7 @@ if ($result) {
           <div class="column clue">
             <div class="wordCopy">"<span></span>"</div>
             <textarea id="clue1" name="clue" rows="2" placeholder="Enter a clue..."></textarea>
-            <div id="clueSwitch1" class="clueSwitch">
-			         <div id="clueSwitch1" class="clueSwitch">
-              <label for="clueSwitch1"></label>
 
-			  
-            </div>
-          </div>
         </li>
         <li class="clear-fix">
           <div class="dragHandleWrapper">
@@ -139,9 +140,7 @@ if ($result) {
           <div class="column clue">
             <div class="wordCopy">"<span></span>"</div>
             <textarea id="clue2" name="clue" rows="2" placeholder="Enter a clue..."></textarea>
-            <div id="clueSwitch2" class="clueSwitch">
-			  <label for="clueSwitch2">&nbsp;</label>
-            </div>
+
           </div>
         </li>
       </ul>
@@ -158,6 +157,7 @@ if ($result) {
    <button id ="genButton" class ="btn" hidden="hidden" name="generate"><i class="fa fa-check-square"></i>Generate</button>
     <button id ="clueButton" class ="btn" hidden="hidden" name="renderClue"><i class="fa fa-plus"></i>Clue</button>
    <button class ="btn" id='add-textbox-btn' hidden="hidden" name="add"><i class="fa fa-plus"></i>Add</button>
+   	<script type="text/javascript" src="js/buttons.js"></script>
 
    
     <section class="crossword" >

@@ -22,12 +22,14 @@ session_start();
     <script type="text/javascript" src="js/jquery.generator.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 
+
 	
   </head>
   <body>
+
 <div class="topnav">
 	<?php if (!isset($_SESSION['id'])) { ?>
-	<button class="btn" id="loginmodal" onclick="window.location='login.php';"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+	<button class="btn"  onclick="window.location='login.php';"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
 	<?php } ?>
 	<?php if (isset($_SESSION['id'])) { ?>
 	<button class="btn" onclick="logOut()" name="logout"><i class=" fa fa-sign-out" aria-hidden="true"></i></button>
@@ -40,9 +42,10 @@ session_start();
     <section class="inputData">
       <h3>Words</h3>
 	  	    <div class="buttonBox" align="center" >
-		<button class ="btn" id='add-textbox-btn' name="add"><i class="fa fa-plus"></i>Add</button>
+		
         <button class ="btn" name="generate"><i class="fa fa-check-square"></i>Generate</button>
         <button  class ="btn" name="clear"><i class="fa fa-trash-o"></i>Clear</button>
+		<button class ="btn" id='add-textbox-btn' name="add"><i class="fa fa-plus"></i>Add</button>
 		<?php
 		if (isset($_SESSION['username'])) {
     echo  '<button  class ="btn" onclick="saveWordList()" name="save"><i class="fa fa-floppy-o"></i>Save</button>';
@@ -76,7 +79,7 @@ session_start();
           </div>
           <div class="spacer"></div>
           <div class="column word">
-            <input id="word2" name="word" type="text" value="vsl" placeholder="Enter a word...">
+            <input id="word2" name="word" type="text" value="Test" placeholder="Enter a word...">
 				  	<button class="clickme btn" name="test" ><i class="fa fa-search"></i>WikiSearch</button>
           </div>
           <div class="column removeButton">
@@ -87,16 +90,9 @@ session_start();
       </ul>
     </section>
     <section class="crossword" >
-      <div id="placeholderMessage" class="infoMessage">
-        <p>
-          Your crossword will appear here after you hit the
-          <button class ="btn" name="generate"><i class="fa fa-check-square"></i>Generate</button> button.
-        </p>
-      </div>
       <div id="outdatedMessage" class="infoMessage">
         <p>
-          You've changed the set of input words. Hence, the crossword shown below
-          is probably outdated. To generate a new crossword, hit the
+          You've changed the set of input words. To generate a new crossword, hit the
           <button class ="btn" name="generate"><i class="fa fa-check-square"></i>Generate</button>button.
         </p>
       </div>
@@ -120,15 +116,8 @@ session_start();
           </div>
           <div class="spacer"></div>
           <div class="column clue">
-            <div class="wordCopy">"<span></span>"</div>
+            <div class="wordCopy">"<span>Enter</span>"</div>
             <textarea id="clue1" name="clue" rows="2" placeholder="Enter a clue..."></textarea>
-            <div id="clueSwitch1" class="clueSwitch">
-			         <div id="clueSwitch1" class="clueSwitch">
-              <label for="clueSwitch1"></label>
-
-			  
-            </div>
-          </div>
         </li>
         <li class="clear-fix">
           <div class="dragHandleWrapper">
@@ -138,28 +127,30 @@ session_start();
           </div>
           <div class="spacer"></div>
           <div class="column clue">
-            <div class="wordCopy">"<span></span>"</div>
+            <div class="wordCopy">"<span>Test</span>"</div>
             <textarea id="clue2" name="clue" rows="2" placeholder="Enter a clue..."></textarea>
-            <div id="clueSwitch2" class="clueSwitch">
-			  <label for="clueSwitch2">&nbsp;</label>
-            </div>
           </div>
         </li>
       </ul>
+	  <h3>WikiSearch</h3>
 	  	   <form id = "wikiform" class="search-form js-search-form">
       <input placeholder="Search here" type="search" class="search-input js-search-input" autofocus />
     </form>
 	<section class="search-results js-search-results" id="searchresults"></section>
     </section>
-	 
+	<section class = "puzzleNameClass">
+	<h3 id="printHeader">Puzzle Name</h3>
+	 	<textarea id="puzzleName" name="puzzleName"  placeholder="Enter puzzle name"></textarea>
+		
+		</section>
 	    <section class="printButtons">
-		<textarea id="puzzleName" name="puzzleName"  placeholder="Enter puzzle name"></textarea>
       <div class="buttonBox">
 	  <button class ="btn" name="printTeacher"><i class="fa fa-print"></i>Print (Teacher Variant)</button>
      <button class ="btn" name="printStudent"><i class="fa fa-print"></i>Print (Student Variant)</button>
       </div>
     </section>
     <section class="clues"></section>
+	  <script type="text/javascript" src="js/buttons.js"></script>
   </body>
 </html>
 <script>
@@ -273,7 +264,7 @@ function getWordList() {
       // Create the dialog box with the table inside
       const dialogContent = $('<div>').append(tableDiv);
       const dialog = dialogContent.dialog({
-        title: 'Puzzle Data',
+        title: 'Saved puzzles',
         modal: true,
         width: 'auto',
         height: 'auto',
@@ -283,7 +274,7 @@ function getWordList() {
       });
 
       // Create a button to copy selected rows
-      const copyButton = $('<button>').text('Copy Selected Rows').button();
+      const copyButton = $('<button>').text('Load puzzle').button();
       copyButton.on('click', function() {
 	
 		let numWords = 0;
@@ -340,7 +331,7 @@ for (let i = 0; i < diff; i++) {
           if (selectBox.is(':checked')) {
             const puzzleId = item.puzzleId;
 			console.log(puzzleId);
-			var url = "http://localhost/individual-project/test.php?puzzleId=" + puzzleId;
+			var url = "http://localhost/individual-project/onlineComplete.php?puzzleId=" + puzzleId;
 			window.open(url);
           }
         }

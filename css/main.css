@@ -151,6 +151,12 @@ width: 5%;
 #puzzleName {
   color: black;
 }
+.puzzleNameClass{
+	 display: flex;
+  flex-direction: column;
+  align-items: center; /* centers the items horizontally */
+  justify-content: center;
+}
 
 
 
