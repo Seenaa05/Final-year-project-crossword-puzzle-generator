@@ -207,7 +207,10 @@ function closeNotification() {
     success: function(response) {
 		showNotification();
         console.log(response);
-    }
+    },
+	 error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error retrieving puzzle:", textStatus, errorThrown);
+            }
 });
 }  
 
